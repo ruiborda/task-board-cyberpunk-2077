@@ -12,7 +12,7 @@ using TaskBoardDemo.Source.Infrastructure.Adapters.Output.Context;
 namespace TaskBoardDemo.Migrations
 {
     [DbContext(typeof(TaskBoardDbContext))]
-    [Migration("20250511175456_InitDatabase")]
+    [Migration("20250512020148_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
