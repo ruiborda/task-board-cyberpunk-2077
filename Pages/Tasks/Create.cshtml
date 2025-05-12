@@ -1,0 +1,199 @@
+@page
+@model TaskBoardDemo.Pages.Tasks.CreateModel
+@{
+    ViewData["Title"] = "Nueva Tarea";
+}
+
+<div class="container">
+    <div class="form-container">
+        <h2 class="modal-title">
+            <img src="~/icons/AddTask.svg" class="modal-title-icon" alt="Añadir"/> Nueva tarea
+        </h2>
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <form method="post" class="form">
+            <div class="form-group">
+                <label class="form-label" for="Title">
+                    <img src="~/icons/Label.svg" class="form-label-icon" alt=""/> Título <span class="form-required">*</span>
+                </label>
+                <input asp-for="TaskRequest.Title" class="input" required minlength="2" maxlength="200" />
+                <span asp-validation-for="TaskRequest.Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="Description">
+                    <img src="~/icons/Description.svg" class="form-label-icon" alt=""/> Descripción
+                </label>
+                <textarea asp-for="TaskRequest.Description" class="input" rows="2"></textarea>
+                <span asp-validation-for="TaskRequest.Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="DueDate">
+                    <img src="~/icons/CalendarToday.svg" class="form-label-icon" alt=""/> Fecha de vencimiento
+                </label>
+                <input asp-for="TaskRequest.DueDate" type="date" class="input" />
+                <span asp-validation-for="TaskRequest.DueDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="CreatedBy">
+                    <img src="~/icons/Person.svg" class="form-label-icon" alt=""/> Creador <span class="form-required">*</span>
+                </label>
+                <select asp-for="TaskRequest.CreatedBy" asp-items="Model.Users" class="input" required>
+                    <option value="">Seleccionar creador</option>
+                </select>
+                <span asp-validation-for="TaskRequest.CreatedBy" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="StatusId">
+                    <img src="~/icons/ViewList.svg" class="form-label-icon" alt=""/> Estado <span class="form-required">*</span>
+                </label>
+                <select asp-for="TaskRequest.StatusId" asp-items="Model.Statuses" class="input" required>
+                    <option value="">Seleccionar estado</option>
+                </select>
+                <span asp-validation-for="TaskRequest.StatusId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="AssignedUserIds">
+                    <img src="~/icons/People.svg" class="form-label-icon" alt=""/> Usuarios asignados <span class="form-required">*</span>
+                </label>
+                <select asp-for="TaskRequest.AssignedUserIds" asp-items="Model.Users" multiple class="input" required size="5">
+                </select>
+                <span asp-validation-for="TaskRequest.AssignedUserIds" class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <a href="/" class="form-cancel-button">
+                    <img src="~/icons/Close.svg" class="btn-icon-img" alt="Cancelar"/> Cancelar
+                </a>
+                <button type="submit" class="form-submit-button">
+                    <img src="~/icons/Save.svg" class="btn-icon-img" alt="Guardar"/> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+
+    .form-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .modal-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .modal-title-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .form-label-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+
+    .input {
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    select.input {
+        background-color: white;
+    }
+
+    select[multiple].input {
+        height: auto;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .form-cancel-button,
+    .form-submit-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .form-cancel-button {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        color: #666;
+    }
+
+    .form-submit-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+    }
+
+    .btn-icon-img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .form-required {
+        color: #f44336;
+    }
+
+    .text-danger {
+        color: #f44336;
+        font-size: 0.875rem;
+        margin-top: 4px;
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

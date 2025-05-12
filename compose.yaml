@@ -1,0 +1,7 @@
+﻿services:
+  taskboarddemo:
+    image: taskboarddemo
+    build:
+      context: .
+      dockerfile: Dockerfile
+

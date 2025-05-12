@@ -1,0 +1,162 @@
+@page
+@model TaskBoardDemo.Pages.Index
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+    var moreIcon = Url.Content("~/icons/MoreVert.svg");
+    var calendarIcon = Url.Content("~/icons/CalendarToday.svg");
+    
+    // Get short versions of status IDs to use in HTML element IDs
+    const string pendingId = "5d288d05-fabc-4c31-a3a5-efc0c65fcd03";
+    const string inProgressId = "e1f7b815-e9eb-48c1-a487-d90097a5b03f";
+    const string completedId = "e969c3bc-2ffd-4315-9da3-ce6ebc3f4599";
+}
+
+<div id="app">
+    <header class="header">
+        <span class="header-title">
+            <img src="~/icons/Dashboard.svg" alt="Tablero" class="title-icon"/> Task Board Demo
+        </span>
+        <button id="add-task-btn" class="header-button">
+            <img src="~/icons/AddTask.svg" alt="Agregar tarea" class="btn-icon-img"/> Nueva tarea
+        </button>
+        <a href="/Tasks/Create" class="header-button">
+            <img src="~/icons/AddTask.svg" alt="Agregar tarea SSR" class="btn-icon-img"/> Nueva tarea (SSR)
+        </a>
+    </header>
+    <div class="board">
+        <div class="column" id="col-@pendingId">
+            <div class="column-header">
+                <span class="column-title">Pendiente</span>
+                <img src="~/icons/Schedule.svg" class="status-icon" alt="Pendiente"/>
+            </div>
+            <div class="tasks" id="tasks-@pendingId">
+                @foreach (var task in Model.Tasks?.Where(t => t.StatusId == new Guid("5d288d05-fabc-4c31-a3a5-efc0c65fcd03")))
+                {
+                    <div class="card" data-id="@task.Id">
+                        <div class="card-title-row">
+                            <span class="card-title">@task.Title</span>
+                            <div class="card-actions">
+                                <button class="card-actions-button" data-id="@task.Id">
+                                    <img src="@moreIcon" class="btn-icon-img" alt="Más"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-info-row">
+                            <span class="card-badge">
+                                <span class="card-state-pendiente"></span>
+                                <span class="card-badge-text">Pendiente</span>
+                            </span>
+                            <span class="card-date">
+                                <img src="@calendarIcon" class="card-date-icon" alt="Fecha"/>
+                                @(task.DueDate.HasValue ? task.DueDate.Value.ToString("d") : "Sin fecha")
+                            </span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(task.Description))
+                        {
+                            <div class="card-desc">@task.Description</div>
+                        }
+                        <div class="card-users-row">
+                            @foreach (var user in task.AssignedUsers)
+                            {
+                                <img src="@user.ProfileImage" alt="@user.Name" class="card-user-icon"/>
+                            }
+                            <div class="card-users-author">
+                                <img src="@task.CreatedByUser.ProfileImage" alt="@task.CreatedByUser.Name" class="card-users-author-icon"/>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="column" id="col-@inProgressId">
+            <div class="column-header">
+                <span class="column-title">En progreso</span>
+                <img src="~/icons/Autorenew.svg" class="status-icon" alt="En progreso"/>
+            </div>
+            <div class="tasks" id="tasks-@inProgressId">
+                @foreach (var task in Model.Tasks?.Where(t => t.StatusId == new Guid("e1f7b815-e9eb-48c1-a487-d90097a5b03f")))
+                {
+                    <div class="card" data-id="@task.Id">
+                        <div class="card-title-row">
+                            <span class="card-title">@task.Title</span>
+                            <div class="card-actions">
+                                <button class="card-actions-button" data-id="@task.Id">
+                                    <img src="@moreIcon" class="btn-icon-img" alt="Más"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-info-row">
+                            <span class="card-badge">
+                                <span class="card-state-progreso"></span>
+                                <span class="card-badge-text">En progreso</span>
+                            </span>
+                            <span class="card-date">
+                                <img src="@calendarIcon" class="card-date-icon" alt="Fecha"/>
+                                @(task.DueDate.HasValue ? task.DueDate.Value.ToString("d") : "Sin fecha")
+                            </span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(task.Description))
+                        {
+                            <div class="card-desc">@task.Description</div>
+                        }
+                        <div class="card-users-row">
+                            @foreach (var user in task.AssignedUsers)
+                            {
+                                <img src="@user.ProfileImage" alt="@user.Name" class="card-user-icon"/>
+                            }
+                            <div class="card-users-author">
+                                <img src="@task.CreatedByUser.ProfileImage" alt="@task.CreatedByUser.Name" class="card-users-author-icon"/>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="column" id="col-@completedId">
+            <div class="column-header">
+                <span class="column-title">Completada</span>
+                <img src="~/icons/CheckCircle.svg" class="status-icon" alt="Completada"/>
+            </div>
+            <div class="tasks" id="tasks-@completedId">
+                @foreach (var task in Model.Tasks?.Where(t => t.StatusId == new Guid("e969c3bc-2ffd-4315-9da3-ce6ebc3f4599")))
+                {
+                    <div class="card" data-id="@task.Id">
+                        <div class="card-title-row">
+                            <span class="card-title">@task.Title</span>
+                            <div class="card-actions">
+                                <button class="card-actions-button" data-id="@task.Id">
+                                    <img src="@moreIcon" class="btn-icon-img" alt="Más"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-info-row">
+                            <span class="card-badge">
+                                <span class="card-state-completada"></span>
+                                <span class="card-badge-text">Completada</span>
+                            </span>
+                            <span class="card-date">
+                                <img src="@calendarIcon" class="card-date-icon" alt="Fecha"/>
+                                @(task.DueDate.HasValue ? task.DueDate.Value.ToString("d") : "Sin fecha")
+                            </span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(task.Description))
+                        {
+                            <div class="card-desc">@task.Description</div>
+                        }
+                        <div class="card-users-row">
+                            @foreach (var user in task.AssignedUsers)
+                            {
+                                <img src="@user.ProfileImage" alt="@user.Name" class="card-user-icon"/>
+                            }
+                            <div class="card-users-author">
+                                <img src="@task.CreatedByUser.ProfileImage" alt="@task.CreatedByUser.Name" class="card-users-author-icon"/>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
